@@ -2,7 +2,7 @@ const { GraphQLError } = require('graphql');
 const Person = require('../models/person');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('../utils/config')
+const { JWT_SECRET } = require('../utils/config');
 
 const resolvers = {
   Query: {
@@ -16,6 +16,7 @@ const resolvers = {
       return Person.find({ phone: { $exists: args.phone === 'YES' } });
     },
     findPerson: async (root, args) => Person.findOne({ name: args.name }),
+    me: (root, args, context) => context.currentUser,
   },
   Person: {
     address: (root) => {
@@ -75,23 +76,23 @@ const resolvers = {
     },
 
     login: async (root, args) => {
-      const user = await User.findOne({ username: args.username })
+      const user = await User.findOne({ username: args.username });
 
-      if ( !user || args.password !== 'secret') {
+      if (!user || args.password !== 'secret') {
         throw new GraphQLError('wrong credentails', {
           extensions: {
-            code: 'BAD_USER_INPUT'
-          }
-        })
+            code: 'BAD_USER_INPUT',
+          },
+        });
       }
 
       const userForToken = {
         username: user.username,
-        id: user._id
-      }
+        id: user._id,
+      };
 
-      return { value: jwt.sign(userForToken, JWT_SECRET)}
-    }
+      return { value: jwt.sign(userForToken, JWT_SECRET) };
+    },
   },
 };
 
