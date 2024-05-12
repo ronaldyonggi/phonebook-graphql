@@ -1,3 +1,4 @@
+const { GraphQLError } = require('graphql');
 const Person = require('../models/person');
 
 const resolvers = {
@@ -24,12 +25,35 @@ const resolvers = {
   Mutation: {
     addPerson: async (root, args) => {
       const person = new Person({ ...args });
-      return person.save();
+
+      try {
+        await person.save();
+      } catch (error) {
+        throw new GraphQLError('Saving person failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.name,
+            error,
+          },
+        });
+      }
+      return person;
     },
     editNumber: async (root, args) => {
       const person = await Person.findOne({ name: args.name });
       person.phone = args.phone;
-      return person.save();
+
+      try {
+        await person.save();
+      } catch (error) {
+        throw new GraphQLError('Edit number failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.name,
+            error,
+          },
+        });
+      }
     },
   },
 };
