@@ -54,6 +54,10 @@ const typeDefs = `#graphql
       username: String!
       password: String!
     ): Token
+
+    addAsFriend (
+      name: String!
+    ): User
   }
 `;
 
