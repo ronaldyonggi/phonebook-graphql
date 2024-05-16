@@ -69,6 +69,7 @@ const resolvers = {
           },
         });
       }
+      return person;
     },
 
     createUser: async (root, args) => {
@@ -112,17 +113,17 @@ const resolvers = {
 
       if (!currentUser) {
         throw new GraphQLError('wrong credentials!', {
-          extensions: { code: 'BAD_USER_INPUT'}
-        })
+          extensions: { code: 'BAD_USER_INPUT' },
+        });
       }
 
-      const person = await Person.findOne({ name: args.name })
-      if ( !isFriend(person)) {
-        currentUser.friends = currentUser.friends.concat(person)
+      const person = await Person.findOne({ name: args.name });
+      if (!isFriend(person)) {
+        currentUser.friends = currentUser.friends.concat(person);
       }
 
-      await currentUser.save()
-      return currentUser
+      await currentUser.save();
+      return currentUser;
     },
   },
 };
