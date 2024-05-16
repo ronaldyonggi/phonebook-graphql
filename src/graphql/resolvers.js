@@ -106,7 +106,7 @@ const resolvers = {
     },
 
     addAsFriend: async (root, args, { currentUser }) => {
-      const isFriend = (person) =>
+      const isAlreadyFriend = (person) =>
         currentUser.friends
           .map((f) => f._id.toString())
           .includes(person._id.toString());
@@ -118,7 +118,7 @@ const resolvers = {
       }
 
       const person = await Person.findOne({ name: args.name });
-      if (!isFriend(person)) {
+      if (!isAlreadyFriend(person)) {
         currentUser.friends = currentUser.friends.concat(person);
       }
 
