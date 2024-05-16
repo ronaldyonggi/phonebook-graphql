@@ -18,10 +18,10 @@ const resolvers = {
     me: (root, args, context) => context.currentUser,
   },
   Person: {
-    address: (root) => {
+    address: ({ street, city }) => {
       return {
-        street: root.street,
-        city: root.city,
+        street,
+        city,
       };
     },
   },
