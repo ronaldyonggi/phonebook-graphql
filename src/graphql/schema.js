@@ -59,6 +59,10 @@ const typeDefs = `#graphql
       name: String!
     ): User
   }
+
+  type Subscription {
+    personAdded: Person!
+  }
 `;
 
 module.exports = {
