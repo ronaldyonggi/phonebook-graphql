@@ -1,7 +1,12 @@
 const typeDefs = `#graphql
-  enum YesNo {
-    YES
-    NO
+  type User {
+    username: String!
+    friends: [Person!]!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
   }
 
   type Address {
@@ -16,14 +21,9 @@ const typeDefs = `#graphql
     id: ID!
   }
 
-  type User {
-    username: String!
-    friends: [Person!]!
-    id: ID!
-  }
-
-  type Token {
-    value: String!
+  enum YesNo {
+    YES
+    NO
   }
 
   type Query {
