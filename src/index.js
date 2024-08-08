@@ -34,7 +34,7 @@ const start = async () => {
 
   // This ApolloServer object is passed to express as middleware
   const server = new ApolloServer({
-    schema: makeExecutableSchema({ typeDefs, resolvers }),
+    schema,
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
       {
