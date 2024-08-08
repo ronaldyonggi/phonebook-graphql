@@ -18,6 +18,7 @@ const typeDefs = `#graphql
     name: String!
     phone: String
     address: Address!
+    friendOf: [User!]!
     id: ID!
   }
 
