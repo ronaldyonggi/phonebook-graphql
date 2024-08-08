@@ -19,6 +19,7 @@ const resolvers = {
     findPerson: async (root, args) => Person.findOne({ name: args.name }),
     me: (root, args, context) => context.currentUser,
   },
+
   Person: {
     address: ({ street, city }) => {
       return {
@@ -27,6 +28,7 @@ const resolvers = {
       };
     },
   },
+
   Mutation: {
     addPerson: async (root, args, context) => {
       const person = new Person({ ...args });
@@ -55,6 +57,7 @@ const resolvers = {
       }
 
       pubsub.publish('PERSON_ADDED', { personAdded: person });
+
       return person;
     },
 
@@ -110,8 +113,8 @@ const resolvers = {
     },
 
     addAsFriend: async (root, args, { currentUser }) => {
-      const isAlreadyFriend = (person) =>
-        currentUser.friends
+      const nonFriendAlready = (person) =>
+        !currentUser.friends
           .map((f) => f._id.toString())
           .includes(person._id.toString());
 
@@ -122,7 +125,7 @@ const resolvers = {
       }
 
       const person = await Person.findOne({ name: args.name });
-      if (!isAlreadyFriend(person)) {
+      if (nonFriendAlready(person)) {
         currentUser.friends = currentUser.friends.concat(person);
       }
 
