@@ -9,7 +9,7 @@ const pubsub = new PubSub();
 const resolvers = {
   Query: {
     personCount: async () => Person.collection.countDocuments(),
-    allPersons: async (root, args) => {
+    allPersons: async (root, args, context) => {
       if (!args.phone) {
         return Person.find({});
       }
